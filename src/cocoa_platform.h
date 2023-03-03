@@ -37,8 +37,10 @@
 
 #if defined(__OBJC__)
 #import <Cocoa/Cocoa.h>
+#import <CoreVideo/CoreVideo.h>
 #else
 typedef void* id;
+typedef void* CVDisplayLinkRef;
 #endif
 
 // NOTE: Many Cocoa enum values have been renamed and we need to build across

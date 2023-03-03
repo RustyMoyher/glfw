@@ -75,6 +75,7 @@ typedef struct _GLFWmapping     _GLFWmapping;
 typedef struct _GLFWjoystick    _GLFWjoystick;
 typedef struct _GLFWtls         _GLFWtls;
 typedef struct _GLFWmutex       _GLFWmutex;
+typedef struct _GLFWcondvar     _GLFWcondvar;
 
 typedef void (* _GLFWmakecontextcurrentfun)(_GLFWwindow*);
 typedef void (* _GLFWswapbuffersfun)(_GLFWwindow*);
@@ -181,6 +182,7 @@ typedef void (APIENTRY * PFN_vkVoidFunction)(void);
 #endif
 
 #if defined(_GLFW_COCOA)
+ #include "posix_thread.h"
  #include "cocoa_platform.h"
 #elif defined(_GLFW_WIN32)
  #include "win32_platform.h"
@@ -495,22 +497,6 @@ struct _GLFWjoystick
     _GLFW_PLATFORM_JOYSTICK_STATE;
 };
 
-// Thread local storage structure
-//
-struct _GLFWtls
-{
-    // This is defined in the platform's thread.h
-    _GLFW_PLATFORM_TLS_STATE;
-};
-
-// Mutex structure
-//
-struct _GLFWmutex
-{
-    // This is defined in the platform's thread.h
-    _GLFW_PLATFORM_MUTEX_STATE;
-};
-
 // Library global data
 //
 struct _GLFWlibrary
@@ -699,6 +685,10 @@ void _glfwPlatformDestroyMutex(_GLFWmutex* mutex);
 void _glfwPlatformLockMutex(_GLFWmutex* mutex);
 void _glfwPlatformUnlockMutex(_GLFWmutex* mutex);
 
+GLFWbool _glfwPlatformCreateCondVar(_GLFWcondvar* condvar);
+void _glfwPlatformDestroyCondvar(_GLFWcondvar* condvar);
+void _glfwPlatformCondWait(_GLFWcondvar* condvar, _GLFWmutex* mutex);
+void _glfwPlatformCondSignal(_GLFWcondvar* condvar);
 
 //////////////////////////////////////////////////////////////////////////
 //////                         GLFW event API                       //////
